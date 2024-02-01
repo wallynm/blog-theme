@@ -1,5 +1,5 @@
 import Link from "next/link";
-import NotePreview from "./note-preview";
+import NotePreview from "./NotePreviewComponent";
 import useSWR from 'swr'
 
 const fetcher = (url) => fetch(url).then(res => res.json())

@@ -6,14 +6,14 @@ import { getMDExcerpt } from './markdownToHtml'
 
 const mdDir = path.join(process.cwd(), process.env.COMMON_MD_DIR)
 
+type Items = {
+  [key: string]: string
+}
+
 export function getPostBySlug(slug: string, fields: string[] = []) {
   const realSlug = slug.replace(/\.md(?:#[^\)]*)?$/, '')
   const fullPath = path.join(mdDir, `${realSlug}.md`)
   const data = parseFileToObj(fullPath);
-
-  type Items = {
-    [key: string]: string
-  }
 
   const items: Items = {}
 
@@ -43,6 +43,10 @@ function parseFileToObj(pathToObj: string) {
   if (typeof data['title'] === 'undefined') {
     data['title'] = decodeURI(path.basename(pathToObj, '.md'))
   }
+  if (typeof data['tags'] === 'undefined') {
+    data['tags'] = 'untagged'
+  }
+
   if (typeof data['date'] === 'object') {
     data['date'] = data['date']?.toISOString()
   } else if (typeof data['date'] !== 'undefined') {
@@ -79,7 +83,7 @@ export function getLinksMapping() {
   return linksMapping;
 }
 
-export function getSlugFromHref (currSlug: string, href: string) {
+export function getSlugFromHref(currSlug: string, href: string) {
   return decodeURI(path.join(...currSlug.split(path.sep).slice(0, -1), href)).replace(/\.md(?:#[^\)]*)?$/, '')
 }
 

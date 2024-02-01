@@ -1,10 +1,10 @@
 import { Searcher } from 'fast-fuzzy';
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getAllPosts  } from '../../../lib/api'
+import { getAllPosts } from '../../../lib/api'
 import { getMDExcerpt } from '../../../lib/markdownToHtml';
 
 const allPosts = getAllPosts([
-  "slug", "title", "content", "author", "date"
+  "slug", "title", "content", "author", "date", "tags"
 ]);
 const searchIndex = allPosts.map((p) => {
   return {
@@ -13,9 +13,10 @@ const searchIndex = allPosts.map((p) => {
     excerpt: getMDExcerpt(p.content),
     date: p.date,
     author: p.author,
+    tags: p.tags,
   }
 });
-const searcher = new Searcher(searchIndex, {keySelector: (obj) => `${obj.title}\n${obj.excerpt}`})
+const searcher = new Searcher(searchIndex, { keySelector: (obj) => `${obj.title}\n${obj.excerpt}` })
 
 export default function postHandler(req: NextApiRequest, res: NextApiResponse) {
   const {

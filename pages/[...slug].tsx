@@ -17,11 +17,12 @@ type Props = {
   post: PostType
   slug: string
   backlinks: { [k: string]: Items }
+  tags: string[]
 }
 
 export default function Post({ post, backlinks }: Props) {
   const router = useRouter()
-  const description = post.excerpt.slice(0, 155)
+  const description = post?.excerpt.slice(0, 155)
   if (!router.isFallback && !post?.slug) {
     return <ErrorPage statusCode={404} />
   }
@@ -40,8 +41,8 @@ export default function Post({ post, backlinks }: Props) {
               type: 'article',
               images: [{
                 url: (post.ogImage?.url) ? post.ogImage.url : "https://fleetingnotes.app/favicon/512.png",
-                width: (post.ogImage?.url) ? null: 512,
-                height: (post.ogImage?.url) ? null: 512,
+                width: (post.ogImage?.url) ? null : 512,
+                height: (post.ogImage?.url) ? null : 512,
                 type: null
               }]
             }}
@@ -51,6 +52,7 @@ export default function Post({ post, backlinks }: Props) {
             content={post.content}
             date={post.date}
             author={post.author}
+            tags={post.tags}
             backlinks={backlinks}
           />
         </Layout>
@@ -96,16 +98,18 @@ export async function getStaticProps({ params }: Params) {
   }
 }
 
-export async function getStaticPaths() {
+export async function getStaticPaths({ locales }) {
   const posts = await getAllPosts(['slug'])
+  let paths = [];
+
+  locales.forEach(locale => {
+    posts.forEach(post => {
+      paths.push({ params: { slug: post.slug.split(path.sep) }, locale })
+    })
+  })
+
   return {
-    paths: posts.map((post) => {
-      return {
-        params: {
-          slug: post.slug.split(path.sep),
-        },
-      } 
-    }),
-    fallback: false,
+    paths: paths,
+    fallback: true,
   }
 }

@@ -9,7 +9,7 @@ import { getLinksMapping, getPostBySlug, getSlugFromHref, updateMarkdownLinks } 
 import removeMd from 'remove-markdown'
 import { Element } from 'hast'
 import { renderToStaticMarkup } from "react-dom/server"
-import NotePreview from '../components/misc/note-preview'
+import NotePreview from '../components/misc/NotePreviewComponent'
 import { fromHtml } from 'hast-util-from-html'
 
 
