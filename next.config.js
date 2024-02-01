@@ -1,16 +1,10 @@
 module.exports = {
-  defaultLocale: 'pt-br',
-  i18n: {
-    locales: ['default', 'en', 'pt-br'],
-    defaultLocale: 'default',
-    localeDetection: false,
-  },
   trailingSlash: true,
-  async rewrites() {
+  async redirect() {
     return [
       {
         source: '/',
-        destination: '/index'
+        destination: '/home'
       },
     ]
   }
