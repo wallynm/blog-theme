@@ -15,7 +15,7 @@ type Props = {
       excerpt: string,
     }
   },
-  tags: [k: string]
+  tags: string[]
 }
 
 const BackLinkBlock = ({ backlinks }: { backlinks: Props['backlinks'] }) => {

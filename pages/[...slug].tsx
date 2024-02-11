@@ -52,6 +52,7 @@ export default function Post({ post, backlinks }: Props) {
             date={post.date}
             author={post.author}
             backlinks={backlinks}
+            tags={['test1', 'test2']}
           />
         </Layout>
       )}
